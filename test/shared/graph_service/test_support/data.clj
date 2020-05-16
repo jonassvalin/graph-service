@@ -14,3 +14,16 @@
 
 (defn random-created-at []
   (time/now))
+
+(defn random-relationship
+  [{:keys [to
+           from
+           relationship-type
+           properties]
+    :or   {relationship-type "friend"
+           properties        {:some-property  "some-value"
+                              :other-property "other-value"}}}]
+  {:to         to
+   :from       from
+   :type       relationship-type
+   :properties properties})

@@ -12,8 +12,8 @@
     (hal/new-resource)
     (hal/add-hrefs
       {:self (relationship-url-for request routes relationship)
-       :from (node-url-for request routes (:from relationship))
-       :to   (node-url-for request routes (:to relationship))})
+       :from (node-url-for request routes (:start relationship))
+       :to   (node-url-for request routes (:end relationship))})
     (hal/add-properties
       (:data relationship))
     (hal/add-property

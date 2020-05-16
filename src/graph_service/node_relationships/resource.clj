@@ -7,7 +7,8 @@
      :refer [node->node-resource]]
     [graph-service.node-relationships.mappers
      :refer [node-relationships->node-relationships-resource]]
-    [graph-service.node.node :as node]))
+    [graph-service.node.node :as node]
+    [graph-service.relationships.relationships :as relationships]))
 
 (defn node-relationships-resource-handler-for
   [{:keys [routes database] :as dependencies}]
@@ -20,12 +21,8 @@
             node (node/by-id database node-id)]
         {:node node}))
 
-    :handle-created
-    (fn [{:keys [request node]}]
-      (node->node-resource
-        request routes node))
-
     :handle-ok
-    (fn [{:keys [request routes node relationships]}]
-      (node-relationships->node-relationships-resource
-        request routes node relationships))))
+    (fn [{:keys [request node]}]
+      (let [relationships (relationships/all-by-node database node)]
+        (node-relationships->node-relationships-resource
+          request routes node relationships)))))
