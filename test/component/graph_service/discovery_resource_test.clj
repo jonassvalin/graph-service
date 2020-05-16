@@ -42,17 +42,22 @@
           (is (ends-with? ping-link "/ping"))))
 
       (testing "includes a link to node"
-        (let [node-link
-              (hal/get-href resource :node)]
-          (is (absolute? node-link))
+        (let [link (hal/get-href resource :node)]
+          (is (absolute? link))
           (is (ends-with?
-                node-link
+                link
                 "/nodes/{nodeId}"))))
 
       (testing "includes a link to nodes"
-        (let [node-link
-              (hal/get-href resource :nodes)]
-          (is (absolute? node-link))
+        (let [link (hal/get-href resource :nodes)]
+          (is (absolute? link))
           (is (ends-with?
-                node-link
-                "/nodes")))))))
+                link
+                "/nodes"))))
+
+      (testing "includes a link to relationships"
+        (let [link (hal/get-href resource :relationships)]
+          (is (absolute? link))
+          (is (ends-with?
+                link
+                "/relationships")))))))

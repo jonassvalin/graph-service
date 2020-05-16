@@ -6,8 +6,6 @@
     [halboy.navigator :as navigator]
     [halboy.resource :as hal]
 
-    [graph-service.test-support.data
-     :refer [random-new-node]]
     [graph-service.component-test-support.system
      :refer [new-test-system
              with-system-lifecycle]]
@@ -23,8 +21,7 @@
   (use-fixtures :each (with-empty-database test-system))
 
   (deftest node-resource-GET-on-success
-    (let [address
-          (core/address @test-system)
+    (let [address (core/address @test-system)
 
           some-property (data/random-uuid)
           other-property (data/random-uuid)
@@ -32,17 +29,14 @@
           new-node {:some-property  some-property
                     :other-property other-property}
 
-          discovery-result
-          (navigator/discover address {:follow-redirects false})
+          discovery-result (navigator/discover
+                             address {:follow-redirects false})
 
-          create-node-result
-          (navigator/post discovery-result :nodes new-node)
+          create-node-result (navigator/post discovery-result :nodes new-node)
 
-          fetched-node-result
-          (navigator/get create-node-result :self)
+          fetched-node-result (navigator/get create-node-result :self)
 
-          fetched-node-resource
-          (navigator/resource create-node-result)]
+          fetched-node-resource (navigator/resource create-node-result)]
       (testing "returns status code 201"
         (is (= 201 (navigator/status create-node-result))))
 
@@ -55,10 +49,11 @@
       (testing "has a self link"
         (is (some? (hal/get-href fetched-node-resource :self))))
 
-      (testing "has an id"
-        (is (some? (hal/get-property fetched-node-resource :id))))
+      (testing "has a link to relationships"
+        (is (some? (hal/get-href fetched-node-resource :relationships))))
 
       (testing "has given properties"
+        (is (some? (hal/get-property fetched-node-resource :id)))
         (is (= some-property (hal/get-property
                                fetched-node-resource :someProperty)))
         (is (= other-property (hal/get-property

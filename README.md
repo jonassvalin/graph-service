@@ -2,7 +2,7 @@ Graph-service
 ====================
 
 ### To run the tests 
-First start a neo4j database for example using Docker:
+First start a neo4j version 3.5 database using Docker:
 
 ```
 docker run \

@@ -98,6 +98,4 @@
   :eastwood {:config-files ["config/linter.clj"]}
   :cljfmt {:indents ^:replace {#".*" [[:inner 0]]}}
   :aliases {"test" ["do"
-                    ["with-profile" "unit" "eftest" ":all"]
-                    ["with-profile" "persistence" "eftest" ":all"]
                     ["with-profile" "component" "eftest" ":all"]]})

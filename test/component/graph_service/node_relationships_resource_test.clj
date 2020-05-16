@@ -1,4 +1,4 @@
-(ns graph-service.nodes-resource-test
+(ns graph-service.node-relationships-resource-test
   (:require
     [clojure.test :refer :all]
     [clojure.string :refer [includes? ends-with?]]
@@ -20,7 +20,7 @@
   (use-fixtures :once (with-system-lifecycle test-system))
   (use-fixtures :each (with-empty-database test-system))
 
-  (deftest nodes-resource-POST-on-success
+  (deftest relationships-resource-GET-on-no-relationships
     (let [address (core/address @test-system)
 
           some-property (data/random-uuid)
@@ -34,19 +34,12 @@
 
           create-node-result (navigator/post discovery-result :nodes new-node)
 
-          created-node-resource (navigator/resource create-node-result)]
-      (testing "returns status code 201"
-        (is (= 201 (navigator/status create-node-result))))
+          relationships-result (navigator/get
+                                 create-node-result :relationships)
 
-      (testing "has location header"
-        (is (some? (navigator/location create-node-result))))
+          relationships-resource (navigator/resource relationships-result)]
+      (testing "returns status code 200"
+        (is (= 200 (navigator/status relationships-result))))
 
       (testing "has a self link"
-        (is (some? (hal/get-href created-node-resource :self))))
-
-      (testing "has given properties"
-        (is (some? (hal/get-property created-node-resource :id)))
-        (is (= some-property (hal/get-property
-                               created-node-resource :someProperty)))
-        (is (= other-property (hal/get-property
-                               created-node-resource :otherProperty)))))))
+        (is (some? (hal/get-href relationships-resource :self)))))))
