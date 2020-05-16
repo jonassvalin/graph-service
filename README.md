@@ -1,5 +1,6 @@
 Graph-service
 ====================
+Generated using leiningen
 
 ### To run the tests 
 First start a neo4j version 3.5 database using Docker:
@@ -16,3 +17,5 @@ docker run \
      --env NEO4J_AUTH=neo4j/test \
      neo4j:3.5
 ```
+
+Then run tests by running `lein test`

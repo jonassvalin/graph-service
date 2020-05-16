@@ -14,7 +14,7 @@
     :initialize-context
     (fn [context]
       (let [node-id (get-in context [:request :params :node-id])
-               node (node/by-id database node-id)]
+            node (node/by-id database node-id)]
         {:node node}))
 
     :handle-ok
