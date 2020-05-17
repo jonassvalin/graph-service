@@ -26,8 +26,8 @@
           some-property (data/random-uuid)
           other-property (data/random-uuid)
 
-          new-node {:some-property  some-property
-                    :other-property other-property}
+          new-node {:properties {:some-property  some-property
+                                 :other-property other-property}}
 
           discovery-result (navigator/discover
                              address {:follow-redirects false})

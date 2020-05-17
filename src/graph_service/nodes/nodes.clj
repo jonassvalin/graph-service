@@ -3,5 +3,5 @@
     [clojurewerkz.neocons.rest.nodes :as nn]))
 
 (defn create [database node]
-  (let [handle (:handle database)]
-    (nn/create handle node)))
+  (let [properties (or (:properties node) {})]
+    (nn/create (:handle database) properties)))
