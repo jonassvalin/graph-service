@@ -1,16 +1,16 @@
-(ns graph-service.node-relationships.resource
+(ns graph-service.outgoing-relationships.resource
   (:require
     [graph-service.shared.resources :as r]
     [graph-service.node.urls
      :refer [node-url-for]]
     [graph-service.node.mappers
      :refer [node->node-resource]]
-    [graph-service.node-relationships.mappers
-     :refer [node-relationships->node-relationships-resource]]
+    [graph-service.outgoing-relationships.mappers
+     :refer [outgoing-relationships->outgoing-relationships-resource]]
     [graph-service.node.node :as node]
     [graph-service.relationships.relationships :as relationships]))
 
-(defn node-relationships-resource-handler-for
+(defn outgoing-relationships-resource-handler-for
   [{:keys [routes database] :as dependencies}]
   (r/hal-resource-handler-for dependencies
     :allowed-methods [:get]
@@ -23,6 +23,6 @@
 
     :handle-ok
     (fn [{:keys [request node]}]
-      (let [relationships (relationships/all-by-node database node)]
-        (node-relationships->node-relationships-resource
+      (let [relationships (relationships/outgoing-by-node database node)]
+        (outgoing-relationships->outgoing-relationships-resource
           request routes node relationships)))))

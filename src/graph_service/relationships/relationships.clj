@@ -11,5 +11,5 @@
         properties (:properties relationship)]
     (nrl/create (:handle database) from to type properties)))
 
-(defn all-by-node [database node]
-  (nrl/all-for (:handle database) (:id node)))
+(defn outgoing-by-node [database node]
+  (nrl/outgoing-for (:handle database) (:id node)))

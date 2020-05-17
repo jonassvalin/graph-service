@@ -50,7 +50,7 @@
         (is (some? (hal/get-href fetched-node-resource :self))))
 
       (testing "has a link to relationships"
-        (is (some? (hal/get-href fetched-node-resource :relationships))))
+        (is (some? (hal/get-href fetched-node-resource :outgoingRelationships))))
 
       (testing "has given properties"
         (is (some? (hal/get-property fetched-node-resource :id)))

@@ -1,20 +1,20 @@
-(ns graph-service.node-relationships.mappers
+(ns graph-service.outgoing-relationships.mappers
   (:require
     [halboy.resource :as hal]
     [graph-service.node.urls
      :refer [node-url-for]]
-    [graph-service.node-relationships.urls
-     :refer [node-relationships-url-for]]
+    [graph-service.outgoing-relationships.urls
+     :refer [outgoing-relationships-url-for]]
     [graph-service.relationship.mappers
      :refer [relationship->relationship-resource]]))
 
-(defn node-relationships->node-relationships-resource
+(defn outgoing-relationships->outgoing-relationships-resource
   [request routes node relationships]
   (->
     (hal/new-resource)
     (hal/add-hrefs
-      {:self (node-relationships-url-for request routes node)})
-    (hal/add-resource :relationships
+      {:self (outgoing-relationships-url-for request routes node)})
+    (hal/add-resource :outgoing-relationships
       (map #(relationship->relationship-resource
               request routes %)
         relationships))))

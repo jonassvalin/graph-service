@@ -35,8 +35,8 @@
      :refer [node-resource-handler-for]]
     [graph-service.nodes.resource
      :refer [nodes-resource-handler-for]]
-    [graph-service.node-relationships.resource
-     :refer [node-relationships-resource-handler-for]]
+    [graph-service.outgoing-relationships.resource
+     :refer [outgoing-relationships-resource-handler-for]]
     [graph-service.relationship.resource
      :refer [relationship-resource-handler-for]]
     [graph-service.relationships.resource
@@ -54,7 +54,7 @@
     ["/health" :health]
     [["/nodes/" :node-id]
      [["" :node]
-      ["/relationships" :node-relationships]]]
+      ["/outgoing-relationships" :outgoing-relationships]]]
     [["/nodes"] :nodes]
     [["/relationships/" :relationship-id] :relationship]
     [["/relationships"] :relationships]
@@ -69,8 +69,8 @@
    (node-resource-handler-for dependencies)
    :nodes
    (nodes-resource-handler-for dependencies)
-   :node-relationships
-   (node-relationships-resource-handler-for dependencies)
+   :outgoing-relationships
+   (outgoing-relationships-resource-handler-for dependencies)
    :relationship
    (relationship-resource-handler-for dependencies)
    :relationships
