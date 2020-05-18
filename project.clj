@@ -20,25 +20,12 @@
                  [halboy "4.0.1"]
                  [liberator "0.15.2"]
                  [compojure "1.6.1"]
-                 [org.slf4j/jcl-over-slf4j "1.7.25"]
-                 [org.slf4j/jul-to-slf4j "1.7.25"]
-                 [org.slf4j/log4j-over-slf4j "1.7.25"]
-                 [ch.qos.logback/logback-classic "1.2.3"
-                  :exclusions [org.slf4j/slf4j-api]]
-                 [cambium/cambium.core "0.9.2"]
-                 [cambium/cambium.logback.json "0.4.2"]
-                 [cambium/cambium.logback.core "0.4.2"]
                  [cambium/cambium.codec-cheshire "0.9.2"]
-                 [io.aviso/logging "0.3.1"]
                  [io.aviso/pretty "0.1.35"]
 
                  [configurati "0.4.0"]
                  [com.stuartsierra/component "0.3.2"]]
-  :plugins [[org.slf4j/slf4j-api "1.7.28"]
-            [ch.qos.logback/logback-classic "1.2.3"
-             :exclusions [org.slf4j/slf4j-api org.slf4j/slf4j-log4j12]]
-
-            [lein-eftest "0.5.3"]
+  :plugins [[lein-eftest "0.5.3"]
             [lein-cprint "1.3.0"]
             [lein-ancient "0.6.15"]
             [lein-kibit "0.1.6"]

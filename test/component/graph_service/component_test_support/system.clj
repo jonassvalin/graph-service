@@ -6,8 +6,6 @@
      :refer [new-database]]
     [graph-service.service
      :refer [new-service]]
-    [graph-service.shared.logging
-     :refer [setup-logging]]
     [graph-service.component-test-support.database
      :refer [database-configuration]]
     [graph-service.component-test-support.service
@@ -27,7 +25,6 @@
 (defn with-system-lifecycle [system-atom]
   (fn [f] (try
             (do
-              (setup-logging)
               (reset! system-atom (core/start @system-atom))
               (f))
             (finally

@@ -23,10 +23,6 @@
              env-source]]
     [configurati.key-fns :refer [remove-prefix]]
 
-    [graph-service.shared.middleware :as middleware]
-    [graph-service.shared.logging :as logging]
-    [graph-service.shared.tracing :as tracing]
-
     [graph-service.ping.resource
      :refer [ping-resource-handler-for]]
     [graph-service.discovery.resource
@@ -44,7 +40,6 @@
     [graph-service.default.resource
      :refer [no-route-resource-handler]])
   (:import
-    [org.eclipse.jetty.server.handler StatisticsHandler HandlerWrapper]
     [org.eclipse.jetty.server Server]))
 
 (defn make-routes []
@@ -85,12 +80,8 @@
     (->
       (make-handler routes resource-handlers)
       (resource/wrap-resource "public")
-      (ssl/wrap-forwarded-scheme)
-      (content-type/wrap-content-type)
-      (not-modified/wrap-not-modified)
       (keyword-params/wrap-keyword-params)
-      (params/wrap-params)
-      (middleware/wrap-exception))))
+      (params/wrap-params))))
 
 (def service-configuration-specification
   (define-configuration-specification
@@ -103,35 +94,8 @@
     (with-specification service-configuration-specification)
     (with-source (env-source :prefix :graph-service))))
 
-(def a-minute 60000)
-
 (defn kilobytes->bytes [kb]
   (* 1024 kb))
-
-(defn configure-for-graceful-shutdown
-  [^Server server]
-  (let [^HandlerWrapper stats-handler (StatisticsHandler.)
-        default-handler (.getHandler server)]
-    (.setHandler stats-handler default-handler)
-    (.setHandler server stats-handler)
-    (.setStopTimeout server a-minute)
-    (.setStopAtShutdown server true)))
-
-(defn configure-audit-logging
-  [^Server server]
-  (let [^HandlerWrapper request-log-handler
-        (logging/request-logging-handler-factory)
-        default-handler (.getHandler server)]
-    (.setHandler request-log-handler default-handler)
-    (.setHandler server request-log-handler)))
-
-(defn configure-correlation-id-handler
-  [^Server server]
-  (let [^HandlerWrapper correlation-id-handler
-        (tracing/tracing-handler-factory)
-        default-handler (.getHandler server)]
-    (.setHandler correlation-id-handler default-handler)
-    (.setHandler server correlation-id-handler)))
 
 (defn- format-address [host port]
   (format "http://%s:%s" host port))
@@ -154,14 +118,7 @@
                             (kilobytes->bytes 32)
 
                      :response-header-size
-                            (kilobytes->bytes 32)
-
-                     :configurator
-                            (fn [server]
-                              (doto server
-                                (configure-audit-logging)
-                                (configure-correlation-id-handler)
-                                (configure-for-graceful-shutdown)))})]
+                            (kilobytes->bytes 32)})]
       (assoc component
         :service service
         :address (format-address

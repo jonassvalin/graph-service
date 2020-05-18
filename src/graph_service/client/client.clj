@@ -1,6 +1,5 @@
 (ns graph-service.client.client
   (:require
-    [graph-service.shared.logging :refer [log-warn]]
     [halboy.resource :as hal]
     [halboy.navigator :as navigator]))
 
