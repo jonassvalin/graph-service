@@ -14,7 +14,8 @@
     [graph-service.component-test-support.assertions
      :refer [submap?]]
     [graph-service.core :as core]
-    [graph-service.test-support.data :as data]))
+    [graph-service.test-support.data :as data]
+    [graph-service.component-test-support.api :as api]))
 
 (let [test-system (atom (new-test-system))]
   (use-fixtures :once (with-system-lifecycle test-system))
@@ -23,16 +24,11 @@
   (deftest outgoing-relationships-resource-GET-on-no-relationships
     (let [address (core/address @test-system)
 
-          some-property (data/random-uuid)
-          other-property (data/random-uuid)
-
-          new-node {:some-property  some-property
-                    :other-property other-property}
-
           discovery-result (navigator/discover
                              address {:follow-redirects false})
 
-          create-node-result (navigator/post discovery-result :nodes new-node)
+          create-node-result (navigator/post discovery-result :nodes
+                               (data/random-node))
 
           relationships-result (navigator/get
                                  create-node-result :outgoingRelationships)
@@ -50,13 +46,11 @@
           discovery-result (navigator/discover
                              address {:follow-redirects false})
 
-          node-1-result (navigator/post discovery-result :nodes {})
-          node-1-resource (navigator/resource
-                            node-1-result)
-          node-2-resource (navigator/resource
-                            (navigator/post discovery-result :nodes {}))
-          node-3-resource (navigator/resource
-                            (navigator/post discovery-result :nodes {}))
+          node-1-result (navigator/post discovery-result :nodes
+                          (data/random-node))
+          node-1-resource (navigator/resource node-1-result)
+          node-2-resource (api/create-node discovery-result)
+          node-3-resource (api/create-node discovery-result)
 
           relationship-1-to-2 (data/random-relationship
                                 {:from (hal/get-property node-1-resource :id)

@@ -15,6 +15,13 @@
 (defn random-created-at []
   (time/now))
 
+(defn random-node
+  ([] (random-node {}))
+  ([{:keys [properties]
+     :or   {properties {:some-property  "some-value"
+                        :other-property "other-value"}}}]
+   {:properties properties}))
+
 (defn random-relationship
   [{:keys [to
            from

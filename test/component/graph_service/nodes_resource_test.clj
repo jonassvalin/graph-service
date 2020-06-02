@@ -26,8 +26,9 @@
           some-property (data/random-uuid)
           other-property (data/random-uuid)
 
-          new-node {:properties {:some-property  some-property
-                                 :other-property other-property}}
+          new-node (data/random-node
+                     {:properties {:some-property  some-property
+                                   :other-property other-property}})
 
           discovery-result (navigator/discover
                              address {:follow-redirects false})
@@ -49,4 +50,4 @@
         (is (= some-property (hal/get-property
                                created-node-resource :someProperty)))
         (is (= other-property (hal/get-property
-                               created-node-resource :otherProperty)))))))
+                                created-node-resource :otherProperty)))))))

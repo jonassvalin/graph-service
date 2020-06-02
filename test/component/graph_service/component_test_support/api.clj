@@ -6,7 +6,7 @@
 
 (defn create-node [discovery]
   (navigator/resource
-    (navigator/post discovery :nodes {})))
+    (navigator/post discovery :nodes (data/random-node))))
 
 (defn create-relationship [discovery from to]
   (->

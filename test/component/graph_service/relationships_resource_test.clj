@@ -14,7 +14,8 @@
     [graph-service.component-test-support.assertions
      :refer [submap?]]
     [graph-service.core :as core]
-    [graph-service.test-support.data :as data]))
+    [graph-service.test-support.data :as data]
+    [graph-service.component-test-support.api :as api]))
 
 (let [test-system (atom (new-test-system))]
   (use-fixtures :once (with-system-lifecycle test-system))
@@ -26,21 +27,19 @@
           discovery-result (navigator/discover
                              address {:follow-redirects false})
 
-          node-id-1 (navigator/resource
-                      (navigator/post discovery-result :nodes {}))
-          node-id-2 (navigator/resource
-                      (navigator/post discovery-result :nodes {}))
-
+          node-1 (api/create-node discovery-result)
+          node-2 (api/create-node discovery-result)
 
           some-property (data/random-uuid)
           other-property (data/random-uuid)
           relationship-type "friend"
 
-          new-relationship {:from       (hal/get-property node-id-1 :id)
-                            :to         (hal/get-property node-id-2 :id)
-                            :type       relationship-type
-                            :properties {:some-property  some-property
-                                         :other-property other-property}}
+          new-relationship (data/random-relationship
+                             {:from       (hal/get-property node-1 :id)
+                              :to         (hal/get-property node-2 :id)
+                              :type       relationship-type
+                              :properties {:some-property  some-property
+                                           :other-property other-property}})
 
           relationships-result (navigator/post discovery-result :relationships
                                  new-relationship)
@@ -53,11 +52,11 @@
         (is (some? (hal/get-href relationships-resource :self))))
 
       (testing "has a from link"
-        (is (= (hal/get-href node-id-1 :self)
+        (is (= (hal/get-href node-1 :self)
               (hal/get-href relationships-resource :from))))
 
       (testing "has a to link"
-        (is (= (hal/get-href node-id-2 :self)
+        (is (= (hal/get-href node-2 :self)
               (hal/get-href relationships-resource :to))))
 
       (testing "has given properties"
