@@ -22,7 +22,7 @@
   (use-fixtures :once (with-system-lifecycle test-system))
   (use-fixtures :each (with-empty-database test-system))
 
-  (deftest outgoing-relationships-resource-GET-on-no-path
+  (deftest client-on-no-path
     (let [address (core/address @test-system)
 
           discovery-result (navigator/discover
@@ -40,7 +40,7 @@
                      (hal/get-href node-3 :self))]
           (is (= path nil))))))
 
-  (deftest outgoing-relationships-resource-GET-on-1-layer
+  (deftest client-on-1-layer
     (let [address (core/address @test-system)
 
           discovery-result (navigator/discover
@@ -59,7 +59,7 @@
                      (hal/get-href node-3 :self))]
           (is (= path [(hal/get-property rel-1-to-3 :id)]))))))
 
-  (deftest outgoing-relationships-resource-GET-multiple-layers
+  (deftest client-on-multiple-layers
     (let [address (core/address @test-system)
 
           discovery-result (navigator/discover
