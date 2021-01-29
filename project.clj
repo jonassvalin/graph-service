@@ -3,8 +3,8 @@
     "0.0.0+LOCAL"))
 
 (defproject graph-service version
-  :description "B-Social Graph Service"
-  :url "https://github.com/b-social/graph-service"
+  :description "Graph Service"
+  :url "https://github.com/jonassvalin/graph-service"
   :license "Proprietary"
   :main graph-service.main
   :dependencies [[org.clojure/clojure "1.10.1"]
